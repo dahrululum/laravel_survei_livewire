@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg bg-body-tertiary" data-bs-theme="light">
+<nav class="navbar navbar-expand-lg bg-body-tertiary   border-bottom" data-bs-theme="light">
     <div class="container-fluid">
       <a class="navbar-brand" href="#">
         {{ config('app.name') }}
