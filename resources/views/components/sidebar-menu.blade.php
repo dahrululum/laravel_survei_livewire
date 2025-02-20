@@ -1,6 +1,6 @@
-<aside id="sidebar">
+<aside id="sidebar" class="expand">
     <div class="d-flex">
-        <button class="toggle-btn" type="button">
+        <button class="toggle-btn" type="button" >
             <i class="bi bi-list"></i>
         </button>
         <div class="sidebar-logo">
