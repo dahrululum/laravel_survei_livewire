@@ -9,7 +9,7 @@
     </div>
     <ul class="sidebar-nav">
         <li class="sidebar-item">
-            <a href="#" class="sidebar-link">
+            <a href="{{ route('rawdata') }}" class="sidebar-link">
                 <i class="bi bi-card-checklist"></i>
                 <span>Raw Data</span>
             </a>
@@ -17,7 +17,13 @@
         <li class="sidebar-item">
             <a href="#" class="sidebar-link">
                 <i class="bi bi-calendar-week-fill"></i>
-                <span>Task</span>
+                <span>Analisis Data</span>
+            </a>
+        </li>
+        <li class="sidebar-item">
+            <a href="#" class="sidebar-link">
+                <i class="bi bi-calendar2-week"></i>
+                <span>Hasil Analisis</span>
             </a>
         </li>
         <li class="sidebar-item">

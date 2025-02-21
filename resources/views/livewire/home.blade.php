@@ -7,5 +7,5 @@
         @error('content') <span class="error">{{ $message }}</span> @enderror
         <button type="submit">Save</button>
     </form> --}}
-    Just Home
+   <h1> Just Home  dododl </h1>  
 </div>

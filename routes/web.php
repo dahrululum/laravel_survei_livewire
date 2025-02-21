@@ -3,6 +3,7 @@
 use App\Livewire\Home;
 use App\Livewire\About;
 use App\Livewire\Login;
+use App\Livewire\Rawdata;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LogoutController;
 
@@ -30,3 +31,6 @@ Route::middleware('auth')->group(function () {
 
 Route::get('/login',Login::class)->name('login')->middleware('guest');
 Route::post('logout',LogoutController::class)->name('logout');
+
+//rawdata
+Route::get('/rawdata', Rawdata::class)->name('rawdata');
