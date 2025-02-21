@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use Livewire\Component;
 use App\Models\Mastersurvei;
+use App\Models\Jwb_skm;
 use Livewire\WithPagination;    
 
 use Illuminate\Support\Facades\Auth;
@@ -55,13 +56,16 @@ class Rawdata extends Component
                 ])->paginate(10);
         }   
 
-        $this->msDetail = Mastersurvei::find($id);
         
+        $rs =  Jwb_skm::where('id_survei',$id)
+                    ->orderby('tglinput','desc')
+                    ->paginate(10);   
+            
        
 
         return view('livewire.rawdata',[
             'ms'        => $ms,
-            'detail'    => $this->msDetail,
+            'detail'    => $rs,
         
         ]);
 
