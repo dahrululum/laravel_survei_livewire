@@ -16,8 +16,10 @@ class Rawdata extends Component
     public $id_instansi = '';
     public $username = '';
     public $leveluser = '';
-
+    public $katakunci;
     public $viewDetail = false;
+    public $idsurvei = '';
+    public $namasurvei = '';
     public $msDetail = [];
 
     
@@ -28,16 +30,56 @@ class Rawdata extends Component
         $this->leveluser = Auth::user()->level;
 
         if($this->leveluser == 1){
-            $ms = Mastersurvei::where('jenis_survei',1)->paginate(10);
+            if($this->katakunci != null){ 
+                $ms = Mastersurvei::with('getSKPD','getJWBRES')
+                ->where('jenis_survei',1)
+                ->where('nama','like','%'.$this->katakunci.'%')
+                ->orderby('id','desc')
+                ->paginate(5);
+
+                //dd($ms);
+            }else{
+                $ms = Mastersurvei::with('getSKPD','getJWBRES')
+                ->where('jenis_survei',1)
+                ->orderby('id','desc')  
+                ->paginate(5);
+            }
+           
         }else{
-            $ms = Mastersurvei::where(
-                [
-                    'id_instansi' => $this->id_instansi, 
-                    'jenis_survei' => 1,
-                ])->paginate(10);
+            if($this->katakunci != null){ 
+                $ms = Mastersurvei::with('getSKPD','getJWBRES')
+                ->where(
+                    [
+                        'id_instansi' => $this->id_instansi, 
+                        'jenis_survei' => 1,
+                    ])
+                        ->where('nama','like','%'.$this->katakunci.'%')
+                        ->orderby('id','desc')
+                        ->paginate(5);
+            }else{
+                $ms = Mastersurvei::with('getSKPD','getJWBRES')
+                ->where(
+                    [
+                        'id_instansi' => $this->id_instansi, 
+                        'jenis_survei' => 1,
+                    ])->paginate(5);
+            }   
+           
         }   
 
-        return view('livewire.rawdata',['ms'=>$ms]);
+        if($this->viewDetail == true){
+            $id = $this->idsurvei;
+            $msDetail =  Jwb_skm::with('getDetail')
+                    ->where('id_survei',$id)
+                    ->orderby('tglinput','desc')
+                    ->get();   
+        }else{
+            $msDetail = [];
+        }
+        return view('livewire.rawdata',[
+            'ms'        => $ms,
+            'detail'    => $msDetail,
+        ]);
     }
     public function view($id){
         $this->id_instansi = Auth::user()->id_instansi;
@@ -47,25 +89,27 @@ class Rawdata extends Component
 
         $this->viewDetail = true;
         if($this->leveluser == 1){
-            $ms = Mastersurvei::where('jenis_survei',1)->paginate(10);
+            $ms = Mastersurvei::where('jenis_survei',1)->get();
         }else{
             $ms = Mastersurvei::where(
                 [
                     'id_instansi' => $this->id_instansi, 
                     'jenis_survei' => 1,
-                ])->paginate(10);
+                ])->get();
         }   
 
-        
-        $rs =  Jwb_skm::where('id_survei',$id)
+        $this->idsurvei=$id;
+        $this->namasurvei = Mastersurvei::find($id)->nama;
+        $msDetail =  Jwb_skm::with('getDetail')
+                    ->where('id_survei',$this->idsurvei)
                     ->orderby('tglinput','desc')
-                    ->paginate(10);   
+                    ->get();   
             
-       
+        //dd($this->idsurvei);
 
         return view('livewire.rawdata',[
             'ms'        => $ms,
-            'detail'    => $rs,
+            'detail'    => $msDetail,
         
         ]);
 

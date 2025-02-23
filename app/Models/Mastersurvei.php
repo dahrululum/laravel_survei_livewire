@@ -30,6 +30,11 @@ class Mastersurvei extends Model
         
         
     ];
+/*************  ✨ Codeium Command ⭐  *************/
+    /**
+     * Hubungan dengan tabel Instansi (SKPD)
+     * 
+/******  e4d66861-58c4-41f0-b9a3-1ee6bcd46b9b  *******/
     public function getSKPD()
     {
         return $this->hasOne(Instansi::class,'id','id_instansi')->withDefault();

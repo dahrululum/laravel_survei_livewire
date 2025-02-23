@@ -5,6 +5,7 @@ use App\Livewire\About;
 use App\Livewire\Login;
 use App\Livewire\Rawdata;
 use Illuminate\Support\Facades\Route;
+use Barryvdh\Debugbar\Facades\Debugbar;
 use App\Http\Controllers\LogoutController;
 
 /*
@@ -23,6 +24,7 @@ use App\Http\Controllers\LogoutController;
 // });
 
 Route::middleware('auth')->group(function () {
+    Debugbar::info('Saya adalah Debugers');
     Route::get('/about', About::class)->name('about');
     Route::get('/', Home::class)->name('home');
 });
