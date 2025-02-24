@@ -7,6 +7,7 @@ use App\Livewire\Rawdata;
 use Illuminate\Support\Facades\Route;
 use Barryvdh\Debugbar\Facades\Debugbar;
 use App\Http\Controllers\LogoutController;
+use App\Livewire\EditRawdata;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,3 +37,4 @@ Route::post('logout',LogoutController::class)->name('logout');
 
 //rawdata
 Route::get('/rawdata', Rawdata::class)->name('rawdata');
+Route::get('/editrawdata/{id}', EditRawdata::class)->name('editrawdata');

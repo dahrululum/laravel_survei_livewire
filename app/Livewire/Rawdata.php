@@ -21,6 +21,14 @@ class Rawdata extends Component
     public $idsurvei = '';
     public $namasurvei = '';
     public $msDetail = [];
+    public $formtitle = 'Edit Raw Data';
+    
+    protected $listeners = ['editRaw' => 'editRawdata'];
+
+    public function editRawdata($id)
+    {
+        $this->formtitle = 'Edit Raw Data ID: '.$id;
+    }
 
     
     public function render()
@@ -114,5 +122,17 @@ class Rawdata extends Component
         ]);
 
         
+    }
+    public function edit($id){
+        $this->idsurvei=$id;
+        $rawdata = Mastersurvei::find($id);
+        return view('livewire.editrawdata',[
+            'detail'        => $rawdata,
+            
+        
+        ]);
+    }
+    public function delete($id){
+        $this->emit('delete', $id);
     }
 }

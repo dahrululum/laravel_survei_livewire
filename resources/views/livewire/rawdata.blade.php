@@ -94,7 +94,13 @@
                     $no++;
                     ?>
                     <tr>
-                        <td> <a wire:click="edit({{$det->id}})"   class="btn btn-success btn-sm">Edit</a>
+                        <td>  
+                            <button @click="$dispacth('editRaw', {{ $det->id }})" type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#editRawmodal">
+                               Edit
+                            </button>
+                             <livewire:edit-rawdata>
+                            
+
                             <a wire:click="deleted({{$det->id}})" wire:confirm="Apakah anda yakin akan menghapus data {{ $det->nama }} ini?"  class="btn btn-danger btn-sm ">Del</a></td>
                         <td>{{ $no }}</td>
                         <td>{{ $det->tglinput }}</td>
