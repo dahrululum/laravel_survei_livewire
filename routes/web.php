@@ -37,4 +37,4 @@ Route::post('logout',LogoutController::class)->name('logout');
 
 //rawdata
 Route::get('/rawdata', Rawdata::class)->name('rawdata');
-Route::get('/editrawdata/{id}', EditRawdata::class)->name('editrawdata');
+ 

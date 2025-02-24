@@ -95,12 +95,13 @@
                     ?>
                     <tr>
                         <td>  
-                            <button @click="$dispacth('editRaw', {{ $det->id }})" type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#editRawmodal">
+                            <button @click="$dispatch('edit-mode', {id: {{ $det->id }}})" type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#editRawmodal">
                                Edit
                             </button>
                              <livewire:edit-rawdata>
                             
-
+                            {{-- <a  href="#"  class="btn btn-info btn-sm " data-bs-toggle="modal" data-bs-target="#editRawmodal" data-whatever="@mdo">edit</a>
+                            <livewire:edit-rawdata> --}}
                             <a wire:click="deleted({{$det->id}})" wire:confirm="Apakah anda yakin akan menghapus data {{ $det->nama }} ini?"  class="btn btn-danger btn-sm ">Del</a></td>
                         <td>{{ $no }}</td>
                         <td>{{ $det->tglinput }}</td>
