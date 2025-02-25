@@ -6,12 +6,12 @@ use Livewire\Component;
 
 class Datepicker extends Component
 {
-    public $date;
+    public $tglinput;
 
     public function updatedDate($value)
     {
         // If you need to format or process the date, do it here
-        $this->date = $value;
+        $this->tglinput = $value;
     }
     public function render()
     {

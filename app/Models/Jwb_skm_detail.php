@@ -30,6 +30,10 @@ class Jwb_skm_detail extends Model
     {
         return $this->belongsToMany(Jwb_skm::class, 'id_responden');
     }
+    public function getSoal()
+    {
+        return $this->hasOne(Soalsurvei::class, 'id_survei','id_survei');
+    }
     public function getDetail($idsurvei,$idresponden,$idsoal)
     {
         $query = parent::query();

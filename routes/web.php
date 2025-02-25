@@ -25,12 +25,14 @@ use App\Http\Controllers\LogoutController;
 //     return view('welcome');
 // });
 Livewire::setUpdateRoute(function ($handle) {
-    return Route::post('/livewire/update', $handle);
+    return Route::post('/skm2/livewire/update', $handle);
 });
 Route::middleware('auth')->group(function () {
     Debugbar::info('Saya adalah Debugers');
     Route::get('/about', About::class)->name('about');
     Route::get('/', Home::class)->name('home');
+    //rawdata
+    Route::get('/rawdata', Rawdata::class)->name('rawdata');
 });
 
 
@@ -38,6 +40,5 @@ Route::middleware('auth')->group(function () {
 Route::get('/login',Login::class)->name('login')->middleware('guest');
 Route::post('logout',LogoutController::class)->name('logout');
 
-//rawdata
-Route::get('/rawdata', Rawdata::class)->name('rawdata');
+
  
