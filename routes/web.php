@@ -1,13 +1,14 @@
 <?php
 
 use App\Livewire\Home;
+use Livewire\Livewire;
 use App\Livewire\About;
 use App\Livewire\Login;
 use App\Livewire\Rawdata;
+use App\Livewire\EditRawdata;
 use Illuminate\Support\Facades\Route;
 use Barryvdh\Debugbar\Facades\Debugbar;
 use App\Http\Controllers\LogoutController;
-use App\Livewire\EditRawdata;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,7 +24,9 @@ use App\Livewire\EditRawdata;
 // Route::get('/', function () {
 //     return view('welcome');
 // });
-
+Livewire::setUpdateRoute(function ($handle) {
+    return Route::post('/livewire/update', $handle);
+});
 Route::middleware('auth')->group(function () {
     Debugbar::info('Saya adalah Debugers');
     Route::get('/about', About::class)->name('about');
