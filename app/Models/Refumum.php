@@ -26,4 +26,27 @@ class Refumum extends Model
         
         
     ];
+    public static function listRef($jenis)
+    {
+        return self::select('id','nama','kode')
+                    ->where('jenis',$jenis)->get();
+    }
+    
+    // public static function listJob()
+    // {
+    //     return self::where('jenis','pekerjaan')->get();
+    // }
+    // public static function listPendidikan()
+    // {
+    //     return self::where('jenis','tingkat_pendidikan')->get();
+    // }
+    // public static function listUmur()
+    // {
+    //     return self::where('jenis','umur')->get();
+    // }
+    // public static function listJenkel()
+    // {
+    //     return self::where('jenis','jenkel')->get();
+    // }
+     
 }

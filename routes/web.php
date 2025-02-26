@@ -9,6 +9,7 @@ use App\Livewire\EditRawdata;
 use Illuminate\Support\Facades\Route;
 use Barryvdh\Debugbar\Facades\Debugbar;
 use App\Http\Controllers\LogoutController;
+use App\Livewire\Viewrawdata;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,15 +25,16 @@ use App\Http\Controllers\LogoutController;
 // Route::get('/', function () {
 //     return view('welcome');
 // });
-Livewire::setUpdateRoute(function ($handle) {
-    return Route::post('/skm2/livewire/update', $handle);
-});
+// Livewire::setUpdateRoute(function ($handle) {
+//     return Route::post('/skm2/livewire/update', $handle);
+// });
 Route::middleware('auth')->group(function () {
     Debugbar::info('Saya adalah Debugers');
     Route::get('/about', About::class)->name('about');
     Route::get('/', Home::class)->name('home');
     //rawdata
     Route::get('/rawdata', Rawdata::class)->name('rawdata');
+    Route::get('/viewrawdata/{id}', Viewrawdata::class)->name('viewrawdata');
 });
 
 

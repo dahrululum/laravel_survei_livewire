@@ -8,6 +8,7 @@ use App\Models\Refumum;
 use Livewire\Component;
 use Livewire\Attributes\On;
 use App\Models\Mastersurvei;
+use App\Models\Soalsurvei;
 
 class EditRawdata extends Component
 {
@@ -20,6 +21,7 @@ class EditRawdata extends Component
     public $refpendidikan=[];
     public $refpekerjaan=[];
     public $detailskm=[];
+    public $soalsurvei=[];
     
     public function render()
     {
@@ -39,12 +41,12 @@ class EditRawdata extends Component
         $this->idresponden = $data->id_responden;
         $this->idsurvei = $data->id_survei;
         $ms =  Mastersurvei::where('id',$this->idsurvei)->first();
-        $this->detailskm =  Jwb_skm_detail::where('id_responden',$this->idresponden)->get();
-        //ref umum
-        $this->refumur = Refumum::where('jenis','umur')->get();
-        $this->refjenkel = Refumum::where('jenis','jenkel')->get();
-        $this->refpendidikan = Refumum::where('jenis','tingkat_pendidikan')->get();
-        $this->refpekerjaan = Refumum::where('jenis','pekerjaan')->get();
+        //$this->detailskm =  Jwb_skm_detail::where('id_responden',$this->idresponden)->get();
+        
+        //soalsurvei
+        $this->soalsurvei =  Soalsurvei::where('id_survei',$this->idsurvei)->get();
+
+       
 
 
         $this->namainstansi = $ms->getSKPD->namaskpd;

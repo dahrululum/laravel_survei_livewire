@@ -66,7 +66,7 @@
                               {{-- {{ print_r($refumur) }} --}}
                                 <select class="form-control form-control-sm" wire:model="umurresponden"  >
                                   <option value="">Pilih Umur </option>
-                                  @foreach($refumur as $um)
+                                  @foreach (App\Models\Refumum::listRef('umur') as $um)
                                     <option value="{{ $um->kode }}" @if($um->kode==$umurresponden) selected @endif>{{ $um->kode }}. {{ $um->nama }}</option>
                                   @endforeach
                                 </select>
@@ -77,7 +77,7 @@
                         <div class="col-sm-8">
                           <select class="form-control form-control-sm" wire:model="jenkelresponden"  >
                             <option value="">Pilih Jenis Kelamin </option>
-                            @foreach($refjenkel as $jk)
+                            @foreach (App\Models\Refumum::listRef('jenkel') as $jk)
                               <option value="{{ $jk->kode }}" @if($jk->kode==$jenkelresponden) selected @endif>{{ $jk->kode }}. {{ $jk->nama }}</option>
                             
                             @endforeach
@@ -97,7 +97,7 @@
                               {{-- {{ print_r($refumur) }} --}}
                                 <select class="form-control form-control-sm" wire:model="pendresponden"  >
                                   <option value="">Pilih Pendidikan </option>
-                                  @foreach($refpendidikan as $pend)
+                                  @foreach (App\Models\Refumum::listRef('tingkat_pendidikan') as $pend)
                                   <option value="{{ $pend->kode }}" @if($pendresponden==$pend->kode) selected @endif>{{ $pend->kode }}. {{ $pend->nama }}</option>
                                   @endforeach
                                 </select>
@@ -109,7 +109,7 @@
                               {{-- {{ print_r($refumur) }} --}}
                                 <select class="form-control form-control-sm" wire:model="jobresponden"  >
                                   <option value="">Pilih Pekerjaan </option>
-                                  @foreach($refpekerjaan as $job)
+                                  @foreach (App\Models\Refumum::listRef('pekerjaan') as $job)
                                   <option value="{{ $job->kode }}" @if($jobresponden==$job->kode) selected @endif>{{ $job->kode }}. {{ $job->nama }}</option>
                                   @endforeach
                                 </select>
@@ -123,8 +123,11 @@
             </div>
             <div class="card-body border border-dark mt-1">
               <h6 class="border-bottom border-1 border-dark w-25 mb-4"> <b>Pertanyaan dan Jawaban Responden</b> </h6> 
-              {{-- {{ print_r($detailskm ) }} --}}
-              @foreach ($detailskm as $js )
+               
+              @foreach($soalsurvei as $ss)
+                <li>{{ $ss->no_soal }}. {{ $ss->nama_soal }}</li>
+              @endforeach
+              {{-- @foreach ($detailskm as $js )
               <?php 
                 $soal = App\Models\Soalsurvei::Where([
                                     ['id_survei','=',$js->id_survei],
@@ -156,8 +159,8 @@
                   </div>
               </div>
 
-                {{-- <li>{{ $js->no_soal }}. {{ $soal->nama_soal }}  </li> --}}
-              @endforeach
+                
+              @endforeach --}}
             </div>
 
             
