@@ -34,6 +34,7 @@
     <script>
       document.addEventListener('close-modal', (event) => {
               $('#createRawdataModal').modal('hide');
+              $('#editRawdataModal').modal('hide');
           });
     </script>
      

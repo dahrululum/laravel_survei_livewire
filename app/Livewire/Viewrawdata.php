@@ -15,7 +15,7 @@ class Viewrawdata extends Component
      
     protected $paginationTheme = 'bootstrap';
     
-    public $detms =[];
+    public $raw_id;
      
     public $idskm, $namainstansi, $namajenissurvei; 
 
@@ -73,6 +73,54 @@ class Viewrawdata extends Component
          $this->dispatch('close-modal'); 
         
     }
+    public function editRawdata(int $raw_id){
+        $jwbskm = Jwb_skm::find($raw_id);
+        if($jwbskm){
+            $this->raw_id = $jwbskm->id;
+            $this->idsurvei = $jwbskm->id_survei;
+            $this->idinstansi = $jwbskm->id_instansi;
+            $this->jenissurvei = $jwbskm->jenis_survei;
+            $this->namasurvei = $jwbskm->getMASTER->nama;
+            $this->tglinput = $jwbskm->tglinput;
+            $this->idresponden = $jwbskm->id_responden;
+            $this->emailresponden = $jwbskm->email;
+            $this->umurresponden = $jwbskm->umur;
+            $this->jenkelresponden = $jwbskm->jenkel;
+            $this->pendresponden = $jwbskm->pendidikan;
+            $this->jobresponden = $jwbskm->pekerjaan;
+        }else{
+            return redirect()->to('/rawdata');
+        }
+    }
+    public function updateRawdata(){
+        $validatedData = $this->validate();
+        dd($this->raw_id);
+        Jwb_skm::where('id',$this->raw_id)->update(
+            [
+                'email' => $validatedData['emailresponden'],
+                'umur' => $validatedData['umurresponden'],
+                'jenkel' => $validatedData['jenkelresponden'],
+                'pendidikan' => $validatedData['pendresponden'],
+                'pekerjaan' => $validatedData['jobresponden'],
+                'tglinput' => $validatedData['tglinput'],
+                'status'    =>1,
+                'ket'       =>'',
+                'saran'       =>'',
+                'status_saran'     =>0,
+                'jenis_layanan'    =>'',
+                
+            ]
+        );
+        session()->flash('message', 'Data Berhasil Diupdate');
+        $this->resetInput();
+        $this->dispatch('close-modal');
+        
+    }
+    public function closeModal(){
+        $this->resetInput();
+        
+    }
+   
     public function resetInput(){
         $aliasresponden = 'SKM'.date('Ymd').'-'.date('ymdhis');
         $this->idresponden = $aliasresponden;
@@ -87,7 +135,7 @@ class Viewrawdata extends Component
     public function render()
     {
              //       dd($this->msDetail);
-
+        
         
         return view('livewire.viewrawdata',[
             'idsurvei'  => $this->idsurvei,
