@@ -1,12 +1,21 @@
  
 <div >
     {{-- Care about people's approval and you will be their prisoner. --}}
-    
+    @include('livewire.rawdataModal')
+    @if(session()->has('message'))
+    <div class="alert alert-success my-3">
+        {{ session('message') }}
+    </div>
+    @endif
+         
     <div class="card mt-2" >
         <div class="card-header">
             <div class="card-title"> <span class="text-primary">Detail Survei: </span>  <b> {{ $this->namasurvei }} </b> <span class="small text-gray">[{{ $this->idsurvei }}]</span>  </div>
         </div>
         <div class="card-body table-responsive p-2">
+            <button type="button" class="btn btn-primary btn-sm mb-2" data-bs-toggle="modal" data-bs-target="#createRawdataModal">
+                Tambah Raw data
+              </button>
             <table class="table table-bordered table-sm  " id="tablena">
                 <thead>
                     <tr class="text-center table-dark small">

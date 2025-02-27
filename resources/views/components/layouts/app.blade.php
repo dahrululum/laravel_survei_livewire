@@ -31,6 +31,11 @@
     
     <script src="https://cdn.jsdelivr.net/npm/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
     <script src="{{ asset('js/script.js') }}"></script>
+    <script>
+      document.addEventListener('close-modal', (event) => {
+              $('#createRawdataModal').modal('hide');
+          });
+    </script>
      
   </body>
 </html>
