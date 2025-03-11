@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Models\Jwb_skm;
 use Livewire\Component;
+use App\Models\Soalsurvei;
 use App\Models\Mastersurvei;
 use Livewire\WithPagination;
 use Livewire\Attributes\Validate;
@@ -16,8 +17,9 @@ class Viewrawdata extends Component
     protected $paginationTheme = 'bootstrap';
     
     public $raw_id;
-     
+    public $updateData = false;
     public $idskm, $namainstansi, $namajenissurvei; 
+    public $soalsurvei=[];
 
     #[Validate('required')] 
     public  $idsurvei, $idinstansi, $jenissurvei, $namasurvei, $tglinput, $idresponden, $emailresponden, $umurresponden, $jenkelresponden, $pendresponden, $jobresponden  ;
@@ -31,6 +33,9 @@ class Viewrawdata extends Component
         $ms =  Mastersurvei::where('id',$this->idsurvei)->first();
         $this->idinstansi = $ms->getSKPD->id;
         $this->namainstansi = $ms->getSKPD->namaskpd;
+        //soalsurvei
+        $this->soalsurvei = Soalsurvei::where('id_survei',$this->idsurvei)->get();
+        
         if($ms->jenis_survei==1){
             $this->jenissurvei=1;
             $this->namajenissurvei = 'SKM';
@@ -94,7 +99,7 @@ class Viewrawdata extends Component
     }
     public function updateRawdata(){
         $validatedData = $this->validate();
-        dd($this->raw_id);
+       // dd($this->raw_id);
         Jwb_skm::where('id',$this->raw_id)->update(
             [
                 'email' => $validatedData['emailresponden'],

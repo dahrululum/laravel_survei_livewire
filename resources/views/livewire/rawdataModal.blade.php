@@ -36,13 +36,12 @@
                 </div>
                 <div class="card-body bg-light border border-dark">
                     <h6 class="border-bottom border-1 border-dark w-25 mb-4"> <b>Profil Responden</b> </h6> 
-                    
                     <div class="mb-3 row ">
                       <div class="col-md-6   ">
                         <div class="card text-left">
                           <div class="card-body">
                             <div class="mb-3 bg-dark row p-2">
-                                <label for="idrespondenlabel" class="col-sm-4 col-form-label text-primary">ID Responden  </label>
+                                <label for="idrespondenlabel" class="col-sm-4 col-form-label text-white">ID Responden  </label>
                                 <div class="col-sm-8">
                                     <input type="text" class="form-control form-control-sm" wire:model="idresponden" readonly >
                                     @error('idresponden') 
@@ -157,21 +156,43 @@
                       </div>
                     </div>
                     
+                </div>
+                <div class="card-body bg-white border border-dark">
+                  <h6 class="border-bottom border-1 w-50 mb-4"><b>Pertanyaan dan Jawaban Responden</b></h6>
+                  <div class="row mb-3">
+                  @foreach($soalsurvei as $ss)
+                      {{-- <li>{{ $ss->no_soal }}. {{ $ss->nama_soal }}</li> --}}
+                      <div class="form-group row border-bottom mb-1 p-2">
+                          <label for="inputName" class="col-sm-7 col-form-label">
+                              {{ $ss->no_soal }}. {{ $ss->nama_soal }}
+                              <input type="hidden" class="form-control  form-control-sm" id="idjwb{{ $ss->id }}" name="idjwb{{ $ss->id }}" value="{{ $ss->id }}" readonly>
+                          </label>
+                          <div class="col-sm-2">
+                               
+                          </div>
+                          <div class="col-sm-3">
+                    
+                            <select class="form-control form-control-sm" name="newpil{{ $ss->no_soal }}" id="newpil{{ $ss->no_soal }}" required>
+                                <option value="">Pilih Jawaban </option>
+                                  @foreach ($ss->getPILIHAN as $sk)  
+                                    <option value="{{ $sk->no_jawaban }}" @if($ss->jawaban==$sk->no_jawaban) selected @endif>{{ $sk->no_jawaban }}. {{ $sk->nama_jawaban }}</option>
+                                
+                                  @endforeach
+                                
+                              </select>
+                           
+                        
+                        </div>
+                      </div>
+                  @endforeach
                   </div>
-                  
+                </div>  
             </div>
-           
-            
-            
-
           </div>
 
           <div class="modal-footer">
-          
               <button  type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
               <button  type="submit" class="btn btn-primary">Save</button>
-           
-            
           </div>
         </form>
       </div>
@@ -221,7 +242,7 @@
                         <div class="card text-left">
                           <div class="card-body">
                             <div class="mb-3 bg-dark row p-2">
-                                <label for="idrespondenlabel" class="col-sm-4 col-form-label text-primary">ID Responden  </label>
+                                <label for="idrespondenlabel" class="col-sm-4 col-form-label text-white">ID Responden  </label>
                                 <div class="col-sm-8">
                                     <input type="text" class="form-control form-control-sm" wire:model="idresponden" readonly >
                                     @error('idresponden') 
@@ -336,7 +357,52 @@
                       </div>
                     </div>
                     
-                  </div>
+                </div>
+                <div class="card-body bg-light border border-dark">
+                  <h6 class="mb-1">Pertanyaan dan Jawaban Responden <span class="badge rounded-pill bg-dark">edit</span></h6> 
+                  <hr>
+                  <div class="mb-2">
+                    <div class="row border-bottom mb-1 p-1">
+                      <div class="col-7 text-center fw-bold">Soal/Pertanyaan</div>
+                      <div class="col-2 text-center fw-bold">Jawaban Lama</div>
+                      <div class="col-3 text-center  fw-bold">Jawaban Baru</div> 
+                    </div>
+                    @foreach($soalsurvei as $ss)
+                    <?php 
+                      $js = App\Models\Jwb_skm_detail::Where([
+                                          ['id_survei','=',$ss->id_survei],
+                                          ['no_soal','=',$ss->no_soal],
+                                      ])->first();
+                                  
+                    ?>
+                    
+                        {{-- <li>{{ $ss->no_soal }}. {{ $ss->nama_soal }}</li> --}}
+                        <div class="row border-bottom mb-1 p-1">
+                            <label for="inputName" class="col-sm-7 col-form-label">
+                                {{ $ss->no_soal }}. {{ $ss->nama_soal }}
+                                <input type="hidden" class="form-control  form-control-sm" id="idjwb{{ $ss->id }}" name="idjwb{{ $ss->id }}" value="{{ $ss->id }}" readonly>
+                            </label>
+                            <div class="col-sm-2">
+                              <input type="hidden" class="form-control  form-control-sm" id="nosoal{{ $ss->no_soal }}" name="nosoal{{ $ss->no_soal }}" value="{{ $ss->no_soal }}" readonly>
+                              <input type="number" class="form-control  form-control-sm" id="oldpil{{ $ss->no_soal }}" name="oldpil{{ $ss->no_soal }}" value="{{ $js->jawaban }}" readonly>
+                            </div>
+                            <div class="col-sm-3">
+                      
+                              <select class="form-control form-control-sm" name="newpil{{ $ss->no_soal }}" id="newpil{{ $ss->no_soal }}" required>
+                                  <option value="">Pilih Jawaban </option>
+                                    @foreach ($ss->getPILIHAN as $sk)  
+                                      <option value="{{ $sk->no_jawaban }}" @if($js->jawaban==$sk->no_jawaban) selected @endif>{{ $sk->no_jawaban }}. {{ $sk->nama_jawaban }}</option>
+                                  
+                                    @endforeach
+                                  
+                                </select>
+                             
+                          
+                          </div>
+                        </div>
+                      @endforeach
+                    </div>
+                </div>  
                   
             </div>
            
