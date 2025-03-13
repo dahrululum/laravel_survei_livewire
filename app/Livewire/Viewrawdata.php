@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Models\Jwb_skm;
+use App\Models\Jwb_skm_detail;
 use Livewire\Component;
 use App\Models\Soalsurvei;
 use App\Models\Mastersurvei;
@@ -18,11 +19,15 @@ class Viewrawdata extends Component
     
     public $raw_id;
     public $updateData = false;
-    public $idskm, $namainstansi, $namajenissurvei; 
+    public $idskm, $namainstansi, $namajenissurvei, $jmlsoal; 
     public $soalsurvei=[];
+    
 
     #[Validate('required')] 
-    public  $idsurvei, $idinstansi, $jenissurvei, $namasurvei, $tglinput, $idresponden, $emailresponden, $umurresponden, $jenkelresponden, $pendresponden, $jobresponden  ;
+    public  $idsurvei, $idinstansi, $jenissurvei, $namasurvei, $tglinput, $idresponden, $emailresponden, $umurresponden, $jenkelresponden, $pendresponden, $jobresponden, $newpil1, $newpil2, $newpil3, $newpil4, $newpil5, $newpil6, $newpil7, $newpil8, $newpil9 ;
+    
+    //#[Validate('required')] 
+     
     public function mount($id)
     {
         $aliasresponden = 'SKM'.date('Ymd').'-'.date('ymdhis');
@@ -33,6 +38,7 @@ class Viewrawdata extends Component
         $ms =  Mastersurvei::where('id',$this->idsurvei)->first();
         $this->idinstansi = $ms->getSKPD->id;
         $this->namainstansi = $ms->getSKPD->namaskpd;
+        $this->jmlsoal = $ms->jml_soal;
         //soalsurvei
         $this->soalsurvei = Soalsurvei::where('id_survei',$this->idsurvei)->get();
         
@@ -72,7 +78,26 @@ class Viewrawdata extends Component
                 'tglinput' => $this->tglinput,
             ]
         );
-        // Jwb_skm::create($validatedData);
+        Jwb_skm::create($validatedData);
+        //detail jawaban soal skm
+        for($i=1; $i<=$this->jmlsoal; $i++){
+            $nosoal=substr_replace('newpil'.$i,'','0',6);
+            //
+            Jwb_skm_detail::create([
+                'id_survei'         => $this->idsurvei,
+                'jenis_survei'      => $this->jenissurvei,
+                'id_responden'      => $this->idresponden,
+                
+                'no_soal'           => $nosoal,
+                'jawaban'           => $this->{'newpil'.$i},
+                'status'            => 1,
+                
+                
+            ]);
+           
+
+        }
+       
          session()->flash('message', 'Data Berhasil Disimpan');
          $this->resetInput();
          $this->dispatch('close-modal'); 
@@ -93,29 +118,50 @@ class Viewrawdata extends Component
             $this->jenkelresponden = $jwbskm->jenkel;
             $this->pendresponden = $jwbskm->pendidikan;
             $this->jobresponden = $jwbskm->pekerjaan;
+            //detail jawaban soal skm
+            $detskm = Jwb_skm_detail::where('id_responden',$jwbskm->id_responden)
+                                    ->where('id_survei',$jwbskm->id_survei)
+                                    ->get();
+            foreach($detskm as $det){
+                $this->{'newpil'.$det->no_soal} = $det->jawaban;
+            }
+            $this->updateData = true;
         }else{
             return redirect()->to('/rawdata');
         }
     }
     public function updateRawdata(){
-        $validatedData = $this->validate();
-       // dd($this->raw_id);
-        Jwb_skm::where('id',$this->raw_id)->update(
-            [
-                'email' => $validatedData['emailresponden'],
-                'umur' => $validatedData['umurresponden'],
-                'jenkel' => $validatedData['jenkelresponden'],
-                'pendidikan' => $validatedData['pendresponden'],
-                'pekerjaan' => $validatedData['jobresponden'],
-                'tglinput' => $validatedData['tglinput'],
-                'status'    =>1,
-                'ket'       =>'',
-                'saran'       =>'',
-                'status_saran'     =>0,
-                'jenis_layanan'    =>'',
+       // $validatedData = $this->validate();
+        dd($this->raw_id);
+       //dd("kampret");
+        // Jwb_skm::where('id',$this->raw_id)->update(
+        //     [
+        //         'email' => $validatedData['emailresponden'],
+        //         'umur' => $validatedData['umurresponden'],
+        //         'jenkel' => $validatedData['jenkelresponden'],
+        //         'pendidikan' => $validatedData['pendresponden'],
+        //         'pekerjaan' => $validatedData['jobresponden'],
+        //         'tglinput' => $validatedData['tglinput'],
+        //         'status'    =>1,
+        //         'ket'       =>'',
+        //         'saran'       =>'',
+        //         'status_saran'     =>0,
+        //         'jenis_layanan'    =>'',
                 
-            ]
-        );
+        //     ]
+      
+        
+        // );
+        //detail jawaban skm
+        // $jws = Jwb_skm_detail::Where('id_responden',$this->idresponden)
+        //                     ->where('id_survei',$this->idsurvei)
+        //                     ->get();
+        // foreach($jws as $jw){
+        //     Jwb_skm_detail::where('id',$jw->id)->update([
+        //         'jawaban' => $this->{'newpil'.$jw->no_soal},
+        //     ]);
+        // }
+
         session()->flash('message', 'Data Berhasil Diupdate');
         $this->resetInput();
         $this->dispatch('close-modal');

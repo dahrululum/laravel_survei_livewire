@@ -3,7 +3,7 @@
     <div class="modal-dialog modal-xl">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="createRawdataModalLabel"> Form Raw Data :: {{ $idsurvei }} </h5>
+          <h5 class="modal-title" id="createRawdataModalLabel"> Form Raw Data :: {{ $idsurvei }} , Jml Soal Survei : {{ $jmlsoal }}</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <form wire:submit.prevent="saveRawdata">
@@ -165,21 +165,24 @@
                       <div class="form-group row border-bottom mb-1 p-2">
                           <label for="inputName" class="col-sm-7 col-form-label">
                               {{ $ss->no_soal }}. {{ $ss->nama_soal }}
-                              <input type="hidden" class="form-control  form-control-sm" id="idjwb{{ $ss->id }}" name="idjwb{{ $ss->id }}" value="{{ $ss->id }}" readonly>
+                               
                           </label>
                           <div class="col-sm-2">
                                
                           </div>
                           <div class="col-sm-3">
                     
-                            <select class="form-control form-control-sm" name="newpil{{ $ss->no_soal }}" id="newpil{{ $ss->no_soal }}" required>
+                            <select class="form-control form-control-sm"  wire:model="newpil{{ $ss->no_soal }}" wire:key="{{ $ss->no_soal }}"  required>
                                 <option value="">Pilih Jawaban </option>
                                   @foreach ($ss->getPILIHAN as $sk)  
-                                    <option value="{{ $sk->no_jawaban }}" @if($ss->jawaban==$sk->no_jawaban) selected @endif>{{ $sk->no_jawaban }}. {{ $sk->nama_jawaban }}</option>
+                                    <option value="{{ $sk->no_jawaban }}" >{{ $sk->no_jawaban }}. {{ $sk->nama_jawaban }}</option>
                                 
                                   @endforeach
                                 
                               </select>
+                              @error('newpil{{ $ss->no_soal }}') 
+                                <span class="error text-danger">{{ $message }}</span> 
+                              @enderror
                            
                         
                         </div>
@@ -203,7 +206,7 @@
     <div class="modal-dialog modal-xl">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="createRawdataModalLabel"> Form Raw Data :: {{ $idsurvei }} </h5>
+          <h5 class="modal-title" id="createRawdataModalLabel"> Form Raw Data :: {{ $raw_id }} {{ $idresponden }}</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <form wire:submit.prevent="updateRawdata">
@@ -242,7 +245,7 @@
                         <div class="card text-left">
                           <div class="card-body">
                             <div class="mb-3 bg-dark row p-2">
-                                <label for="idrespondenlabel" class="col-sm-4 col-form-label text-white">ID Responden  </label>
+                                <label for="idrespondenlabel" class="col-sm-4 col-form-label text-white">ID Responden   </label>
                                 <div class="col-sm-8">
                                     <input type="text" class="form-control form-control-sm" wire:model="idresponden" readonly >
                                     @error('idresponden') 
@@ -359,7 +362,7 @@
                     
                 </div>
                 <div class="card-body bg-light border border-dark">
-                  <h6 class="mb-1">Pertanyaan dan Jawaban Responden <span class="badge rounded-pill bg-dark">edit</span></h6> 
+                  <h6 class="mb-1">Pertanyaan dan Jawaban Responden {{ $idresponden }} <span class="badge rounded-pill bg-dark">edit</span></h6> 
                   <hr>
                   <div class="mb-2">
                     <div class="row border-bottom mb-1 p-1">
@@ -369,10 +372,25 @@
                     </div>
                     @foreach($soalsurvei as $ss)
                     <?php 
-                      $js = App\Models\Jwb_skm_detail::Where([
-                                          ['id_survei','=',$ss->id_survei],
-                                          ['no_soal','=',$ss->no_soal],
-                                      ])->first();
+                      // $js = App\Models\Jwb_skm_detail::Where([
+                      //                     ['id_survei','=',$ss->id_survei],
+                      //                     ['id_responden','=',$idresponden],
+                      //                     ['no_soal','=',$ss->no_soal],
+                      //                 ])->first();
+                      //                 dd($js);
+                      if($updateData == false){
+                        $js = App\Models\Jwb_skm_detail::where('id_survei', $ss->id_survei)
+                                                      
+                                                      ->where('no_soal', $ss->no_soal)
+                                                      ->first();
+                      }else{
+                        $js = App\Models\Jwb_skm_detail::where('id_survei', $ss->id_survei)
+                                                      ->where('id_responden', $idresponden)
+                                                      ->where('no_soal', $ss->no_soal)
+                                                      ->first();
+                      }
+                    // dd($js);
+                      
                                   
                     ?>
                     
@@ -388,7 +406,7 @@
                             </div>
                             <div class="col-sm-3">
                       
-                              <select class="form-control form-control-sm" name="newpil{{ $ss->no_soal }}" id="newpil{{ $ss->no_soal }}" required>
+                              <select class="form-control form-control-sm" wire:model="newpil{{ $ss->no_soal }}" required>
                                   <option value="">Pilih Jawaban </option>
                                     @foreach ($ss->getPILIHAN as $sk)  
                                       <option value="{{ $sk->no_jawaban }}" @if($js->jawaban==$sk->no_jawaban) selected @endif>{{ $sk->no_jawaban }}. {{ $sk->nama_jawaban }}</option>
