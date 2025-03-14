@@ -6,10 +6,11 @@ use App\Livewire\About;
 use App\Livewire\Login;
 use App\Livewire\Rawdata;
 use App\Livewire\EditRawdata;
+use App\Livewire\Viewrawdata;
+use App\Livewire\AnalisisData;
 use Illuminate\Support\Facades\Route;
 use Barryvdh\Debugbar\Facades\Debugbar;
 use App\Http\Controllers\LogoutController;
-use App\Livewire\Viewrawdata;
 
 /*
 |--------------------------------------------------------------------------
@@ -35,6 +36,8 @@ Route::middleware('auth')->group(function () {
     //rawdata
     Route::get('/rawdata', Rawdata::class)->name('rawdata');
     Route::get('/viewrawdata/{id}', Viewrawdata::class)->name('viewrawdata');
+    Route::get('/analisisdata', AnalisisData::class)->name('analisisdata');
+    
 });
 
 

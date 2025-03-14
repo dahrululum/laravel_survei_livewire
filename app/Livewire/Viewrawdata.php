@@ -230,6 +230,20 @@ class Viewrawdata extends Component
         $this->pendresponden = null;
         $this->jobresponden = null;
     }
+    public function deleted($id){
+        $jwbskm = Jwb_skm::find($id);
+        if($jwbskm){
+            $jwbskm->delete();
+            $jwbskm->getDetail()->delete();
+            session()->flash('message', 'Data Berhasil Dihapus');
+        }else{
+            session()->flash('message', 'Data Gagal Dihapus');
+        }
+     
+   
+    
+    }
+
     public function render()
     {
              //       dd($this->msDetail);
