@@ -131,37 +131,84 @@ class Viewrawdata extends Component
         }
     }
     public function updateRawdata(){
-       // $validatedData = $this->validate();
-        dd($this->raw_id);
+        $pesan = [
+            'emailresponden.required' => 'Email harus diisi',
+            'umurresponden.required' => 'Umur harus diisi',
+            'jenkelresponden.required' => 'Jenis Kelamin harus diisi',
+            'pendresponden.required' => 'Pendidikan harus diisi', 
+            'jobresponden.required' => 'Pekerjaan harus diisi', 
+            
+        ];
+        $datavalid = $this->validate([
+                    'emailresponden' => 'required|email',
+                    'umurresponden' => 'required',
+                    'jenkelresponden' => 'required',
+                    'pendresponden' => 'required',
+                    'jobresponden' => 'required',
+                    'tglinput'      => 'required',
+                    'newpil1' => 'required',
+                    'newpil2' => 'required',
+                    'newpil3' => 'required',
+                    'newpil4' => 'required',
+                    'newpil5' => 'required',
+                    'newpil6' => 'required',
+                    'newpil7' => 'required',
+                    'newpil8' => 'required',
+                    'newpil9' => 'required',
+                    
+                    ],$pesan);
+
+        //dd($datavalid);
        //dd("kampret");
-        // Jwb_skm::where('id',$this->raw_id)->update(
-        //     [
-        //         'email' => $validatedData['emailresponden'],
-        //         'umur' => $validatedData['umurresponden'],
-        //         'jenkel' => $validatedData['jenkelresponden'],
-        //         'pendidikan' => $validatedData['pendresponden'],
-        //         'pekerjaan' => $validatedData['jobresponden'],
-        //         'tglinput' => $validatedData['tglinput'],
-        //         'status'    =>1,
-        //         'ket'       =>'',
-        //         'saran'       =>'',
-        //         'status_saran'     =>0,
-        //         'jenis_layanan'    =>'',
+        Jwb_skm::where('id',$this->raw_id)->update(
+            [
+                'email' => $datavalid['emailresponden'],
+                'umur' => $datavalid['umurresponden'],
+                'jenkel' => $datavalid['jenkelresponden'],
+                'pendidikan' => $datavalid['pendresponden'],
+                'pekerjaan' => $datavalid['jobresponden'],
+                'tglinput' => $datavalid['tglinput'],
+                'status'    => 1,
+                'ket'       =>'',
+                'saran'       =>'',
+                'status_saran'     =>0,
+                'jenis_layanan'    =>'',
                 
-        //     ]
+            ]
       
         
-        // );
+        );
         //detail jawaban skm
-        // $jws = Jwb_skm_detail::Where('id_responden',$this->idresponden)
-        //                     ->where('id_survei',$this->idsurvei)
-        //                     ->get();
-        // foreach($jws as $jw){
-        //     Jwb_skm_detail::where('id',$jw->id)->update([
-        //         'jawaban' => $this->{'newpil'.$jw->no_soal},
-        //     ]);
-        // }
+        $jws = Jwb_skm_detail::Where('id_responden',$this->idresponden)
+                            ->where('id_survei',$this->idsurvei)
+                            ->get();
+        if(count($jws)>0){
+            foreach($jws as $jw){
+                Jwb_skm_detail::where('id',$jw->id)->update([
+                    'jawaban' => $this->{'newpil'.$jw->no_soal},
+                ]);
+            }
 
+        }else{
+            for($i=1; $i<=$this->jmlsoal; $i++){
+                $nosoal=substr_replace('newpil'.$i,'','0',6);
+                //
+                Jwb_skm_detail::create([
+                    'id_survei'         => $this->idsurvei,
+                    'jenis_survei'      => $this->jenissurvei,
+                    'id_responden'      => $this->idresponden,
+                    
+                    'no_soal'           => $nosoal,
+                    'jawaban'           => $this->{'newpil'.$i},
+                    'status'            => 1,
+                    
+                    
+                ]);
+               
+    
+            }
+        }
+           
         session()->flash('message', 'Data Berhasil Diupdate');
         $this->resetInput();
         $this->dispatch('close-modal');

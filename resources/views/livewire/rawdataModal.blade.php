@@ -402,14 +402,14 @@
                             </label>
                             <div class="col-sm-2">
                               <input type="hidden" class="form-control  form-control-sm" id="nosoal{{ $ss->no_soal }}" name="nosoal{{ $ss->no_soal }}" value="{{ $ss->no_soal }}" readonly>
-                              <input type="number" class="form-control  form-control-sm" id="oldpil{{ $ss->no_soal }}" name="oldpil{{ $ss->no_soal }}" value="{{ $js->jawaban }}" readonly>
+                              <input type="text" class="form-control  form-control-sm" id="oldpil{{ $ss->no_soal }}" name="oldpil{{ $ss->no_soal }}" value="@if(isset($js->jawaban)) {{ $js->jawaban }} @else 0  @endif" readonly>
                             </div>
                             <div class="col-sm-3">
                       
                               <select class="form-control form-control-sm" wire:model="newpil{{ $ss->no_soal }}" required>
                                   <option value="">Pilih Jawaban </option>
                                     @foreach ($ss->getPILIHAN as $sk)  
-                                      <option value="{{ $sk->no_jawaban }}" @if($js->jawaban==$sk->no_jawaban) selected @endif>{{ $sk->no_jawaban }}. {{ $sk->nama_jawaban }}</option>
+                                      <option value="{{ $sk->no_jawaban }}" @if(isset($js->jawaban) && $js->jawaban==$sk->no_jawaban) selected @endif>{{ $sk->no_jawaban }}. {{ $sk->nama_jawaban }}</option>
                                   
                                     @endforeach
                                   
